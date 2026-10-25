@@ -1,0 +1,634 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Confession 💗</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --pink: #ff7eb3;
+  --dark-pink: #e84393;
+  --light-pink: #fff0f6;
+  --purple: #c8a2ff;
+  --text: #713d56;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  background: linear-gradient(135deg, #ffe4ef, #fff0f6, #f2e5ff);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+#particles {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  bottom: -50px;
+  animation: floatUp linear forwards;
+  opacity: 0;
+  user-select: none;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  15% { opacity: 0.7; }
+  85% { opacity: 0.7; }
+  100% {
+    transform: translateY(-110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.app {
+  width: 100%;
+  max-width: 560px;
+  position: relative;
+  z-index: 1;
+}
+
+.top-label {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #b56b91;
+  margin-bottom: 18px;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 28px;
+  padding: 25px;
+  box-shadow: 0 18px 60px rgba(205, 105, 153, 0.18);
+  backdrop-filter: blur(12px);
+  min-height: 440px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.screen {
+  display: none;
+  text-align: center;
+  animation: fadeIn 0.55s ease;
+}
+
+.screen.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.small-label {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #c47b9d;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-size: clamp(25px, 6vw, 36px);
+  line-height: 1.3;
+  color: #d94f91;
+  margin-bottom: 16px;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+
+.subtitle {
+  color: #a76e8a;
+  margin-bottom: 24px;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  border-radius: 30px;
+  padding: 13px 22px;
+  font-size: 15px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 18px rgba(216, 79, 145, 0.2);
+}
+
+.primary-btn {
+  color: white;
+  background: linear-gradient(135deg, #ff83b4, #e84393);
+  box-shadow: 0 6px 16px rgba(232, 67, 147, 0.2);
+}
+
+.secondary-btn {
+  color: #b65c89;
+  background: #fff0f6;
+  border: 1px solid #ffd4e5;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+/* Envelope */
+
+.envelope-area {
+  margin: 24px auto;
+  width: 190px;
+  height: 145px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.envelope {
+  width: 165px;
+  height: 105px;
+  position: relative;
+  background: #ffb6d2;
+  border-radius: 7px;
+  box-shadow: 0 10px 24px rgba(205, 105, 153, 0.18);
+  transition: transform 0.3s;
+}
+
+.envelope:hover {
+  transform: translateY(-5px) rotate(-2deg);
+}
+
+.envelope::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #ffc9df;
+  clip-path: polygon(0 0, 50% 58%, 100% 0);
+  z-index: 2;
+  transform-origin: top;
+  transition: transform 0.6s;
+}
+
+.envelope.open::before {
+  transform: rotateX(180deg);
+}
+
+.envelope::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #ff9fc4;
+  clip-path: polygon(0 100%, 50% 42%, 100% 100%);
+  z-index: 1;
+  border-radius: 0 0 7px 7px;
+}
+
+.seal {
+  position: absolute;
+  top: 43%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  z-index: 3;
+  transition: opacity 0.3s;
+}
+
+.envelope.open .seal {
+  opacity: 0;
+}
+
+/* Notes */
+
+.paper {
+  position: relative;
+  background: linear-gradient(145deg, #fffafc, #fff0f6);
+  border: 1px solid #ffd7e7;
+  border-radius: 18px;
+  padding: 25px 20px;
+  min-height: 270px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: inset 0 0 20px rgba(255, 180, 210, 0.12);
+}
+
+.paper::before {
+  content: "♥";
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  color: #f3b2cf;
+  font-size: 17px;
+}
+
+.note-emoji {
+  font-size: 37px;
+  margin-bottom: 12px;
+}
+
+.note-title {
+  font-size: clamp(22px, 5vw, 28px);
+  color: #d94f91;
+  margin-bottom: 18px;
+}
+
+.note-message {
+  white-space: pre-line;
+  font-size: 15px;
+  line-height: 2;
+  text-align: center;
+}
+
+.note-sign {
+  margin-top: 18px;
+  color: #c47b9d;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.counter {
+  margin-top: 17px;
+  font-size: 12px;
+  color: #bd7b9d;
+  letter-spacing: 1px;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f3c5d9;
+  transition: transform 0.3s, background 0.3s;
+}
+
+.dot.active {
+  background: #e84393;
+  transform: scale(1.4);
+}
+
+/* Ending */
+
+.final-heart {
+  font-size: 65px;
+  margin: 12px 0;
+  animation: heartbeat 1.5s infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.12); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.08); }
+}
+
+.signature {
+  margin-top: 28px;
+  font-size: 13px;
+  color: #c47b9d;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 11px;
+  color: #bd7b9d;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 420px) {
+  body { padding: 12px; }
+  .panel { padding: 18px; min-height: 420px; }
+  .paper { padding: 24px 15px; }
+  p { font-size: 15px; }
+  .note-message { font-size: 14px; }
+  button { padding: 12px 17px; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="particles"></div>
+
+<main class="app">
+  <div class="top-label">A little something for you 💌</div>
+
+  <section class="panel">
+
+    <!-- Welcome screen -->
+    <div class="screen active" id="welcome">
+      <div class="small-label">Made with a little nervousness</div>
+      <h1>Hey, ARPITA! 🌸</h1>
+
+      <p class="subtitle">
+        I have something to tell youuu... 🫠
+      </p>
+
+      <div class="envelope-area" id="envelopeArea">
+        <div class="envelope" id="envelope">
+          <div class="seal">💌</div>
+        </div>
+      </div>
+
+      <p style="font-size:13px; color:#bd7b9d; margin-bottom:20px;">
+        Tap the envelope to open your little surprise
+      </p>
+
+      <button class="primary-btn" id="openBtn">
+        Open my letter 💗
+      </button>
+    </div>
+
+    <!-- Note pages -->
+    <div class="screen" id="notes">
+      <div class="small-label">Just for you · with care</div>
+
+      <div class="paper">
+        <div class="note-emoji" id="noteEmoji"></div>
+        <h2 class="note-title" id="noteTitle"></h2>
+        <p class="note-message" id="noteMessage"></p>
+        <div class="note-sign" id="noteSign"></div>
+      </div>
+
+      <div class="counter" id="counter"></div>
+      <div class="dots" id="dots"></div>
+
+      <div class="button-row">
+        <button class="secondary-btn" id="prevBtn">
+          ← Back
+        </button>
+        <button class="primary-btn" id="nextBtn">
+          Next 💗 →
+        </button>
+      </div>
+    </div>
+
+    <!-- Final screen -->
+    <div class="screen" id="ending">
+      <div class="small-label">Before you go...</div>
+
+      <div class="final-heart">💗</div>
+
+      <h1>That's my little confession.</h1>
+
+      <p>
+        I just wanted to be honest with you about my feelings. 🥹
+      </p>
+
+      <p style="margin-top:15px;">
+        Please don't feel pressured to say anything you don't feel.
+        Take your time, and whatever your answer is, I'll respect it. 🌷
+      </p>
+
+      <p style="margin-top:15px;">
+        Thank you for reading all of this. ❤️‍🩹
+      </p>
+
+      <div class="signature">
+        Made with care by Shivam 💌
+      </div>
+
+      <div class="button-row">
+        <button class="secondary-btn" id="restartBtn">
+          Read it again ↺
+        </button>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="footer">A SMALL LETTER · A LOT OF FEELINGS ♡</div>
+</main>
+
+<script>
+const notes = [
+  {
+    emoji: "🫠",
+    title: "Page 1 — Guess what? 🌸",
+    message: `You wanted to know my crush huhh.......🫠
+
+So that I have written in this website.`,
+    sign: "Keep readinggg... 👉👈"
+  },
+  {
+    emoji: "😭",
+    title: "Page 2 — Ummmm...",
+    message: `Ummm I also don't know whether I should say this or nottt 😭
+
+But butttt........`,
+    sign: "I'm getting nervous alreadyyy 😭"
+  },
+  {
+    emoji: "❤️‍🩹",
+    title: "Page 3 — The truth...",
+    message: `I think I have liked you since many many monthsss ago...
+
+But could'nt say it.......`,
+    sign: "There's more I wanna say..."
+  },
+  {
+    emoji: "👉👈",
+    title: "Page 4 — Please don't laugh 😭",
+    message: `Dekhiyeeee dont mindddd 😭 👉 👈
+
+Hassiyegaa mtt.......
+
+Ptaaa nhiiii apkoo kaiseeee lagegaa kaisa nhii lagegaa butttt i alsoo dont knoww how apsee baat krte krteee feelings aagai ❤️‍🩹
+
+Hm isliyee nhii bataree the kii i was scareddd that if i would tell earlier you might get awkward... aur hamari dosti bhiii shydd kaam ho jayeeeee.........🫠😭
+
+You're nott pressuerd, koii zaruri nhii h ki jo maii feel krra hun wahi apko bhiii karnaaa ho.........🥲
+
+Bss mujhe jo lgraa tha maine bol diyaa...........abb app dekhlo...
+
+Mai jldii kisi ko confess isliye nhi krtaa causee i'm insecuree about my looks................😭😶‍🌫️`,
+    sign: "Please take your time. ❤️"
+  },
+  {
+    emoji: "🥹",
+    title: "Page 5 — One last thing...",
+    message: `Ikk it will be awkward for you cause you areee older than me...
+
+***** buttt I really liked youuu before......
+
+I was afraid to tell you about this.....`,
+    sign: "Whatever you feel, it's okay. 🌷"
+  }
+];
+
+let currentNote = 0;
+
+const welcome = document.getElementById("welcome");
+const notesScreen = document.getElementById("notes");
+const ending = document.getElementById("ending");
+
+const envelope = document.getElementById("envelope");
+const openBtn = document.getElementById("openBtn");
+const envelopeArea = document.getElementById("envelopeArea");
+
+const noteEmoji = document.getElementById("noteEmoji");
+const noteTitle = document.getElementById("noteTitle");
+const noteMessage = document.getElementById("noteMessage");
+const noteSign = document.getElementById("noteSign");
+const counter = document.getElementById("counter");
+const dots = document.getElementById("dots");
+
+function showScreen(screen) {
+  document.querySelectorAll(".screen").forEach(item => {
+    item.classList.remove("active");
+  });
+
+  screen.classList.add("active");
+}
+
+function renderNote() {
+  const note = notes[currentNote];
+
+  noteEmoji.textContent = note.emoji;
+  noteTitle.textContent = note.title;
+  noteMessage.textContent = note.message;
+  noteSign.textContent = note.sign;
+
+  counter.textContent =
+    `PAGE ${currentNote + 1} OF ${notes.length}`;
+
+  dots.innerHTML = "";
+
+  notes.forEach((item, index) => {
+    const dot = document.createElement("div");
+    dot.className = "dot" + (index === currentNote ? " active" : "");
+    dots.appendChild(dot);
+  });
+
+  document.getElementById("prevBtn").style.visibility =
+    currentNote === 0 ? "hidden" : "visible";
+
+  document.getElementById("nextBtn").textContent =
+    currentNote === notes.length - 1
+      ? "One last thing 💗 →"
+      : "Next 💗 →";
+}
+
+function openLetter() {
+  envelope.classList.add("open");
+
+  setTimeout(() => {
+    currentNote = 0;
+    renderNote();
+    showScreen(notesScreen);
+  }, 450);
+}
+
+function nextPage() {
+  if (currentNote < notes.length - 1) {
+    currentNote++;
+    renderNote();
+  } else {
+    showScreen(ending);
+  }
+}
+
+function prevPage() {
+  if (currentNote > 0) {
+    currentNote--;
+    renderNote();
+  } else {
+    showScreen(welcome);
+    envelope.classList.remove("open");
+  }
+}
+
+openBtn.addEventListener("click", openLetter);
+envelopeArea.addEventListener("click", openLetter);
+
+document.getElementById("nextBtn").addEventListener("click", nextPage);
+document.getElementById("prevBtn").addEventListener("click", prevPage);
+
+document.getElementById("restartBtn").addEventListener("click", () => {
+  currentNote = 0;
+  envelope.classList.remove("open");
+  showScreen(welcome);
+});
+
+/* Floating hearts and sparkles */
+function addParticle() {
+  const container = document.getElementById("particles");
+  const particle = document.createElement("span");
+
+  const symbols = ["♡", "♥", "💗", "✨", "🌸"];
+  particle.className = "particle";
+  particle.textContent = symbols[
+    Math.floor(Math.random() * symbols.length)
+  ];
+
+  particle.style.left = Math.random() * 100 + "vw";
+  particle.style.fontSize = (12 + Math.random() * 18) + "px";
+  particle.style.animationDuration = (7 + Math.random() * 8) + "s";
+
+  container.appendChild(particle);
+
+  setTimeout(() => {
+    particle.remove();
+  }, 16000);
+}
+
+setInterval(addParticle, 550);
+
+for (let i = 0; i < 12; i++) {
+  setTimeout(addParticle, i * 250);
+}
+
+renderNote();
+</script>
+
+</body>
+</html>
